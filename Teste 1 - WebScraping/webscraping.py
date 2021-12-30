@@ -24,4 +24,15 @@ def safe_connect(link):
                 exit()
     return content
 
-# Site: https://www.gov.br/ans/pt-br/assuntos/prestadores/padrao-para-troca-de-informacao-de-saude-suplementar-2013-tiss
+# Declaring first page parser function
+def get_second_page(first_page):
+    html = safe_connect(first_page)
+    soup = BeautifulSoup(html, 'html.parser')
+    p_occurrences = soup.find_all("p", {"class": "callout"})
+    a_block = [i.a for i in p_occurrences if "Clique aqui para acessar a versão" in i.a.string][0]
+    next_page = a_block["href"]
+    return next_page
+
+# Main
+first_page = "https://www.gov.br/ans/pt-br/assuntos/prestadores/padrao-para-troca-de-informacao-de-saude-suplementar-2013-tiss"
+second_page = get_second_page(first_page)
