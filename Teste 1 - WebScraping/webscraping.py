@@ -3,7 +3,7 @@ import urllib.request
 import traceback
 import sys
 
-# Declaring function for managing connections
+# Declaring function for managing connections and getting Soup instance
 def safe_connect(link):
     content = ''
     last = True
@@ -22,12 +22,11 @@ def safe_connect(link):
                 print("Todas as 10 tentativas falharam. Parando programa... Último erro:")
                 print(''.join(traceback.format_exception(*sys.exc_info())))
                 exit()
-    return content
+    return BeautifulSoup(content, 'html.parser')
 
 # Declaring first page parser function
 def get_second_page(first_page):
-    html = safe_connect(first_page)
-    soup = BeautifulSoup(html, 'html.parser')
+    soup = safe_connect(first_page)
     p_occurrences = soup.find_all("p", {"class": "callout"})
     a_block = [i.a for i in p_occurrences if "Clique aqui para acessar a versão" in i.a.string][0]
     next_page = a_block["href"]
@@ -35,8 +34,7 @@ def get_second_page(first_page):
 
 # Declaring second page parser function
 def get_download_link(second_page):
-    html = safe_connect(second_page)
-    soup = BeautifulSoup(html, 'html.parser')
+    soup = safe_connect(second_page)
     tr_occurrences = soup.find("table").find_all("tr")[1:]
     comp_org = [i for i in tr_occurrences if "Componente Organizacional" in i.td.string][0] # First td is title of file ("which file" indicator)
     return comp_org.a["href"]
