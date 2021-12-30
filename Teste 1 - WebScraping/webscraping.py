@@ -41,8 +41,15 @@ def get_download_link(second_page):
     comp_org = [i for i in tr_occurrences if "Componente Organizacional" in i.td.string][0] # First td is title of file ("which file" indicator)
     return comp_org.a["href"]
 
+# Declaring download and file creation function
+def download_file(download_link):
+    html = urllib.request.urlopen(download_link).read()
+    file_name = download_link[download_link.rfind('/') + 1:]
+    with open(file_name, 'wb') as f:
+        f.write(html)
+
 # Main
 first_page = "https://www.gov.br/ans/pt-br/assuntos/prestadores/padrao-para-troca-de-informacao-de-saude-suplementar-2013-tiss"
 second_page = get_second_page(first_page)
 download_link = get_download_link(second_page)
-print(download_link)
+download_file(download_link)
