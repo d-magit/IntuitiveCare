@@ -33,6 +33,16 @@ def get_second_page(first_page):
     next_page = a_block["href"]
     return next_page
 
+# Declaring second page parser function
+def get_download_link(second_page):
+    html = safe_connect(second_page)
+    soup = BeautifulSoup(html, 'html.parser')
+    tr_occurrences = soup.find("table").find_all("tr")[1:]
+    comp_org = [i for i in tr_occurrences if "Componente Organizacional" in i.td.string][0] # First td is title of file ("which file" indicator)
+    return comp_org.a["href"]
+
 # Main
 first_page = "https://www.gov.br/ans/pt-br/assuntos/prestadores/padrao-para-troca-de-informacao-de-saude-suplementar-2013-tiss"
 second_page = get_second_page(first_page)
+download_link = get_download_link(second_page)
+print(download_link)
