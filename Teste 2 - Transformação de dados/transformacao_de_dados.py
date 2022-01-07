@@ -1,4 +1,5 @@
 from tabula import read_pdf
+from zipfile import ZipFile
 import os
 import re
 options = ["-Dorg.slf4j.simpleLogger.defaultLogLevel=off", "-Dorg.apache.commons.logging.Log=org.apache.commons.logging.impl.NoOpLog"]
@@ -80,4 +81,14 @@ third_table_name = process_file_name(name)
 with open(third_table_name, 'w', encoding='utf-8') as f:
     f.write(final[:-1])
 ###########
+##
+
+
+
+## Zipping files
+zipObj = ZipFile('Teste_Davi_de_Moura_Amaral.zip', 'w')
+zipObj.write(first_table_name)
+zipObj.write(second_table_name)
+zipObj.write(third_table_name)
+zipObj.close()
 ##
