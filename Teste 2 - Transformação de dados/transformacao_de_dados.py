@@ -15,7 +15,7 @@ def process_file_name(name):
 
 
 ## Reading PDF
-df = read_pdf(filename, pages=[114, 115, 116, 117, 118, 119, 120], encoding='utf-8', java_options=options)
+df = read_pdf(filename, pages="114-120", encoding='utf-8', java_options=options)
 ##
 
 
@@ -59,5 +59,25 @@ for i in full_content[1:-1]:
 second_table_name = process_file_name(name)
 with open(second_table_name, 'w', encoding='utf-8') as f:
     f.write(final[1:])
+###########
+########### Third table
+name = ''
+final = ''
+df[7].to_csv('32.csv', encoding='utf-8')
+with open(f'32.csv', 'r', encoding='utf-8') as f:
+    file = f.read().split('\n')
+    name = file[0][1:]
+    final += file[1].split(',')[1] + ',' + file[2].split(',')[1] + '\n'
+    for i in file[3:-1]:
+        content = i.split(',')[1]
+        if content == '':
+            continue
+        first_entry = content[0]
+        second_entry = content[2:]
+        final += first_entry + ',' + second_entry + '\n'
+os.remove('32.csv')
+third_table_name = process_file_name(name)
+with open(third_table_name, 'w', encoding='utf-8') as f:
+    f.write(final[:-1])
 ###########
 ##
