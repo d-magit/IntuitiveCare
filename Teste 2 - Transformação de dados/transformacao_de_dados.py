@@ -5,15 +5,11 @@ import re
 options = ["-Dorg.slf4j.simpleLogger.defaultLogLevel=off", "-Dorg.apache.commons.logging.Log=org.apache.commons.logging.impl.NoOpLog"]
 filename = 'padrao-tiss_componente-organizacional_202111.pdf' ## PDF file name
 
-
-
 ## Simple function for processing and then removing accents from string (to use as filename)
 def process_file_name(name):
     name = "_".join(name.lower().split())
     return re.sub(r'([çã])', lambda x: {'ç':'c', 'ã':'a'}[x.group(1)], name) + ".csv"
 ##
-
-
 
 ## Reading PDF
 df = read_pdf(filename, pages="114-120", encoding='utf-8', java_options=options)
